@@ -34,9 +34,10 @@ Good luck!
 
 # R project details
 This R project was built mainly with R Notebooks on RStudio version 1.0.44 and R version x64 3.3.2.  There are 3 main parts in this project, namely     
-1. run_analysis.R
-2. run_analysis.Rmd
-3. codebook.Rmd
+
+1. run_analysis.R - This is the main R script that will call run_analysis.Rmd and codebook.Rmd (R Notebooks) to run the R code and generate required output.     
+2. run_analysis.Rmd - This R Notebook contains the code for data transformation and generate output.
+3. codebook.Rmd - This R Notebook is the code book with R code chunks, which generates information about the datasets.
 
 # Instructions for reproducing this R project
 

@@ -1,4 +1,4 @@
-# R Notebook for Coursera Johns Hopskins University 03 Getting and Cleaning Data Project
+# Coursera Johns Hopskins University 03 Getting and Cleaning Data Project
 ## Author:  William Thong
 
 The purpose of this project is to demonstrate your ability to collect, work with, and clean a data set. The goal is to prepare tidy data that can be used for later analysis. You will be graded by your peers on a series of yes/no questions related to the project. 
@@ -30,9 +30,16 @@ You should create one R script called run_analysis.R that does the following.
 4. Appropriately labels the data set with descriptive variable names.
 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
-Good luck!
+Good luck!     
+
+# R project details
+This R project was built mainly with R Notebooks on RStudio version 1.0.44 and R version x64 3.3.2.  There are 3 main parts in this project, namely     
+1. run_analysis.R
+2. run_analysis.Rmd
+3. codebook.Rmd
 
 # Instructions for reproducing this R project
+
 
 # Output produced
 

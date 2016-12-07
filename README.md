@@ -33,7 +33,7 @@ You should create one R script called run_analysis.R that does the following.
 Good luck!     
 
 # R project details
-This R project was built mainly with R Notebooks on RStudio version 1.0.44 and R version x64 3.3.2.  There are 3 main parts in this project, namely     
+This R project was built mainly with R Notebooks on RStudio version 1.0.44 and R version x64 3.3.2.  There are 3 main parts in this project,    
 
 1. run_analysis.R - This is the main R script that will call run_analysis.Rmd and codebook.Rmd (R Notebooks) to run the R code and generate required output.     
 2. run_analysis.Rmd - This R Notebook contains the code for data transformation and generate output.
@@ -41,6 +41,25 @@ This R project was built mainly with R Notebooks on RStudio version 1.0.44 and R
 
 # Instructions for reproducing this R project
 
+1. Clone/download this repo to your local directory.  
+2. Navigate to the directory where you saved the repo and open the R script **run_analysis.R** with your favorite R client (RStudio recommended).  
+3. Modify the directory path in ```setwd()``` to set the working directory to this directory.  
+4. Run the R script **run_analysis.R**.  
+5. The R script will generate **run_analysis.html** and **codebook.html**.  Open them with your favorite browser to view the generated results.  
+
+If you are using RStudio, you can view and run the R Notebooks interactively.  Assuming you were using RStudio to set working directory and ran **run_analysis.R** previously, and within the same R session,
+
+- Open **run_analysis.Rmd** and **codebook.Rmd**.
+- You can run these R Notebooks interactively by running individual or all code chunks.
 
 # Output produced
+The following are the output,
+
+* Tidy datasets in csv format:  **TidyData.csv** and **TidyDataAvg.csv**.  
+* Results in HTML format:  **run_analysis.html** and **codebook.html**.
+* Results in Notebook HTML format:  **run_analysis.nb.html** and **codebook.nb.html**
+
+
+
+
 

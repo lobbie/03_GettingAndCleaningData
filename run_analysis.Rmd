@@ -1,0 +1,173 @@
+---
+title: R Notebook for Coursera Johns Hopskins University 03 Getting and Cleaning Data
+  Project
+author: "Author: William Thong"
+output:
+  html_notebook: default
+---
+
+## Load R Packages
+We load the required R packages but first we check if packages are installed and if not, install the required packages then load.  This cool ipak function from Steven Worthington facilitates seamless installing and loading of R packages, especially when required packages are not installed before hand.
+```{r}
+
+# ipak function: install and load multiple R packages.  Check to see if packages are installed. Install them if they are not, then load them into the R session.
+# Credits to Steven Worthington (https://gist.github.com/stevenworthington/3178163)
+
+ipak <- function(pkg){
+    new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+    if (length(new.pkg)) 
+        install.packages(new.pkg, dependencies = TRUE)
+    sapply(pkg, require, character.only = TRUE)
+}
+
+# usage
+packages <- c("dplyr", "tidyr", "knitr", "rmarkdown")
+ipak(packages)
+
+```
+
+
+## Get Source Data
+We download the source data files and unzip into the Source Data folder.  We also list the the files in the folder to ensure we have all the required files downloaded and unzipped.
+```{r}
+
+# download data file and unzip
+fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+if(!file.exists("./SourceData")){dir.create("./SourceData")}
+if (!file.exists("./SourceData/UCI_HAR_Dataset.zip")){
+  download.file(fileUrl,"./SourceData/UCI_HAR_Dataset.zip", mode="wb")
+  unzip("./SourceData/UCI_HAR_Dataset.zip", exdir="./SourceData")
+}
+
+# list all the unzipped files within the folder and sub-folders
+myPath <- file.path("./SourceData" , "UCI HAR Dataset")
+myFiles <-list.files(myPath, recursive=TRUE)
+myFiles
+
+```
+
+
+## Import Data
+We import the required source files into R using read.table function.  We also view the structures of the imported datasets to ensure we have imported correctly.  Note that we included the option of no headers and stringsAsFactors = FALSE.
+```{r}
+
+# import all required Activity, Subject, Features and related files
+dfFeatName <- read.table(file.path(myPath, "features.txt"),head=FALSE, stringsAsFactors=FALSE)
+dfActyLabel <- read.table(file.path(myPath, "activity_labels.txt"),header = FALSE, stringsAsFactors=FALSE)
+dfActyTest  <- read.table(file.path(myPath, "test" , "Y_test.txt" ),header = FALSE)
+dfActyTrain <- read.table(file.path(myPath, "train", "Y_train.txt"),header = FALSE)
+dfSubjTrain <- read.table(file.path(myPath, "train", "subject_train.txt"),header = FALSE)
+dfSubjTest  <- read.table(file.path(myPath, "test" , "subject_test.txt"),header = FALSE)
+dfFeatTest  <- read.table(file.path(myPath, "test" , "X_test.txt" ),header = FALSE)
+dfFeatTrain <- read.table(file.path(myPath, "train", "X_train.txt"),header = FALSE)
+
+# view the summaries of imported data
+str(dfFeatName, list.len=10)
+str(dfActyLabel, list.len=10)
+str(dfActyTest, list.len=10)
+str(dfActyTrain, list.len=10)
+str(dfSubjTrain, list.len=10)
+str(dfSubjTest, list.len=10)
+str(dfFeatTest, list.len=10)
+str(dfFeatTrain, list.len=10)
+
+```
+
+
+## Task 1. Merge the training and test data sets to create one data set.
+We merge all the imported train and test data sets into 3 data sets based on Activity, Subject and Features.  We rename the variables in each of these data set accordingly, then merge the 3 data sets into 1 temporary dataset "dfTidyTemp1".
+```{r}
+
+# merge the train and test datasets (append rows)
+dfActyMerge <- bind_rows(dfActyTest, dfActyTrain)
+dfSubjMerge <- bind_rows(dfSubjTest, dfSubjTrain)
+dfFeatMerge <- bind_rows(dfFeatTest, dfFeatTrain)
+
+# rename the vars in these 3 merged datasets
+names(dfActyMerge)<- c("activity")
+names(dfSubjMerge)<- c("subject")
+names(dfFeatMerge)<- dfFeatName$V2
+
+# merge the 3 datasets into 1 dataset (append columns)
+dfTidyTemp1 <- bind_cols(dfSubjMerge, dfActyMerge, dfFeatMerge)
+str(dfTidyTemp1, list.len=30)
+
+```
+
+
+## Task 2. Extracts only the measurements on the mean and standard deviation for each measurement.
+This operation creates another temporary data set where variable names contain mean() or std().
+```{r}
+# select variables names which contain subject, activity and (mean() or std())
+vFeatName <- names(dfTidyTemp1)[grep("^subject$|^activity$|mean\\(\\)|std\\(\\)",names(dfTidyTemp1))]
+dfTidyTemp2 <- subset(dfTidyTemp1,select=vFeatName)
+str(dfTidyTemp2, list.len = 20)
+
+```
+
+
+## Task 3. Uses descriptive activity names to name the activities in the data set
+This tranformation replaces the numeric values in the 'activity' variable with descriptive activity names from the Activity Label data set.  The final single data set is dfTidydata.
+```{r}
+
+# replace the numeric values in the 'activity' variable with descriptive activity names.
+dfTidyData <- left_join(dfTidyTemp2, dfActyLabel, by = c("activity" = "V1")) %>%
+  select(1,69,3:68) %>%
+  rename(activity = V2)
+str(dfTidyData, list.len = 20)
+
+```
+
+
+## Task 4. Appropriately labels the data set with descriptive variable names.
+This tranformation renames the abbreviated variable names with descriptive variable names.
+```{r}
+
+# rename abbreviated var names with more descriptive var names
+names(dfTidyData) <- gsub("^t", "time", names(dfTidyData))
+names(dfTidyData) <- gsub("^f", "frequency", names(dfTidyData))
+names(dfTidyData) <- gsub("Acc", "Accelerometer", names(dfTidyData))
+names(dfTidyData) <- gsub("Gyro", "Gyroscope", names(dfTidyData))
+names(dfTidyData) <- gsub("Mag", "Magnitude", names(dfTidyData))
+names(dfTidyData) <- gsub("BodyBody", "Body", names(dfTidyData))
+str(dfTidyData, list.len = 20)
+
+```
+
+## Task 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+This transformation creates a second independent tidy dataset, dfTidyDataAvg, from dfTidyData dataset with the average of each variable by each subject and by eac activity.
+
+```{r}
+
+# average of each var by each subject by each activity
+dfTidyDataAvg <- dfTidyData %>%
+  group_by(subject, activity) %>%
+  summarise_each(funs(mean)) %>%
+  ungroup()
+str(dfTidyDataAvg, list.len = 20)
+
+```
+
+## Output the 2 tidy datasets as txt files
+This operation output the 2 tidy datasets into 2 csv files i.e. TidyData.csv and TidyDataAvg.csv.
+```{r}
+
+# write tab-delimited text files of data to project directory
+write.table(dfTidyData, "./TidyData.txt", quote=FALSE, sep="\t", row.names=FALSE)
+write.table(dfTidyDataAvg, "./TidyDataAvg.txt", quote=FALSE, sep="\t", row.names=FALSE)
+
+```
+
+
+
+
+
+
+  
+
+
+
+
+
+
+

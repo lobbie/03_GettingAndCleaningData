@@ -42,7 +42,7 @@ This R project was built mainly with R Notebooks on RStudio version 1.0.44 and R
 # Instructions for reproducing this R project
 
 1. Clone/download this repo to your local directory.  
-2. Navigate to the directory where you saved the repo and ensure that the source data files are in the **"./SourceData/UCI HAR Dataset"** folder of your directory. If you do not have a copy of the source data files, the R script will download a copy for you through your internet connection.   
+2. Navigate to the directory where you saved the repo and ensure that the source data files are in the **"./SourceData/UCI HAR Dataset"** folder of your directory. If you do not have a copy of the source data files, the R script will download a copy for you during runtime and through your internet connection.   
 3. Locate and open the R script **run_analysis.R** with your favorite R client (RStudio recommended). Modify the directory path in ```setwd()``` to set the working directory to your directory.  
 4. Run the R script **run_analysis.R**.  
 5. The R script will generate **run_analysis.html** and **codebook.html**.  Open them with your favorite browser to view the generated results.  

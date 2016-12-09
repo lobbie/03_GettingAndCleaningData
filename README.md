@@ -1,4 +1,4 @@
-# Coursera Johns Hopskins University 03 Getting and Cleaning Data Project
+# Coursera Johns Hopskins University Data Science Course 03 Getting and Cleaning Data Project
 ## Author:  William Thong
 
 The purpose of this project is to demonstrate your ability to collect, work with, and clean a data set. The goal is to prepare tidy data that can be used for later analysis. You will be graded by your peers on a series of yes/no questions related to the project. 

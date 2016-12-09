@@ -47,7 +47,7 @@ This R project was built mainly with R Notebooks on RStudio version 1.0.44 and R
 4. Run the R script **run_analysis.R**.  
 5. The R script will generate **run_analysis.html** and **codebook.html**.  Open them with your favorite browser to view the generated results.  
 
-If you are using RStudio, you can view and run the R Notebooks interactively.  Assuming you were using RStudio to set working directory and ran **run_analysis.R** previously, and within the same R session,
+If you are using RStudio, you can view and run the R Notebooks interactively.  Assuming you were using RStudio to set working directory and had ran **run_analysis.R** previously, and within the same R session,
 
 - Open **run_analysis.Rmd** and **codebook.Rmd**.
 - You can run these R Notebooks interactively by running individual or all code chunks.
